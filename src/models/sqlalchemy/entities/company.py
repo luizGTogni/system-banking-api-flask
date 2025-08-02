@@ -1,17 +1,17 @@
-from sqlalchemy import Column, String, DECIMAL, BIGINT
+from sqlalchemy import Column, String, Numeric, BIGINT
 from src.models.sqlalchemy.settings.base import Base
 
 class CompanyTable(Base):
     __tablename__ = "company"
 
     id = Column(BIGINT, primary_key=True)
-    revenue = Column(DECIMAL, nullable=False, default=0)
+    revenue = Column(Numeric(precision=10, scale=2), nullable=False, default=0)
     age = Column(BIGINT, nullable=False)
     trade_name = Column(String(length=200), nullable=False)
     phone = Column(String(length=20), nullable=False)
     corporate_email = Column(String(length=60), nullable=False)
     category = Column(String(), nullable=False)
-    balance = Column(DECIMAL, nullable=False, default=0)
+    balance = Column(Numeric(precision=10, scale=2), nullable=False, default=0)
 
 def __repr__(self) -> str:
     return (

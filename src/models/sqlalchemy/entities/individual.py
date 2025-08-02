@@ -1,17 +1,17 @@
-from sqlalchemy import Column, String, DECIMAL, BIGINT
+from sqlalchemy import Column, String, Numeric, BIGINT
 from src.models.sqlalchemy.settings.base import Base
 
 class IndividualTable(Base):
     __tablename__ = "individual"
 
     id = Column(BIGINT, primary_key=True)
-    monthly_income = Column(DECIMAL, nullable=False, default=0)
+    monthly_income = Column(Numeric(precision=10, scale=2), nullable=False, default=0)
     age = Column(BIGINT, nullable=False)
     full_name = Column(String(length=200), nullable=False)
     phone = Column(String(length=20), nullable=False)
     email = Column(String(length=60), nullable=False)
     category = Column(String(), nullable=False)
-    balance = Column(DECIMAL, nullable=False, default=0)
+    balance = Column(Numeric(precision=10, scale=2), nullable=False, default=0)
 
 def __repr__(self) -> str:
     return (
