@@ -1,9 +1,9 @@
 from sqlalchemy.orm.exc import NoResultFound
 from src.models.interfaces.customer import CustomerInterface
 from src.models.sqlalchemy.settings.connection import DBConnectionHandler
-from src.models.sqlalchemy.entities.individual import IndividualTable
+from src.models.sqlalchemy.entities.company import CompanyTable
 
-class IndividualRepository(CustomerInterface):
+class CompanyRepository(CustomerInterface):
     def __init__(self, db_connection: DBConnectionHandler) -> None:
         self.__db_connection = db_connection
 
@@ -18,36 +18,36 @@ class IndividualRepository(CustomerInterface):
         ) -> None:
         with self.__db_connection as db:
             try:
-                individual_data = IndividualTable(
-                    monthly_income = revenue,
+                company_data = CompanyTable(
+                    revenue = revenue,
                     age = age,
-                    full_name = name,
+                    trade_name = name,
                     phone = phone,
-                    email = email,
+                    corporate_email = email,
                     category = category,
                     balance = 0
                 )
 
-                db.session.add(individual_data)
+                db.session.add(company_data)
                 db.session.commit()
             except Exception as exception:
                 db.session.rollback()
                 raise exception
 
-    def list_all(self) -> list[IndividualTable]:
+    def list_all(self) -> list[CompanyTable]:
         with self.__db_connection as db:
             try:
-                customers = db.session.query(IndividualTable).all()
+                customers = db.session.query(CompanyTable).all()
                 return customers
             except NoResultFound:
                 return []
 
-    def generate_report(self, customer_id: int) -> None:
+    def generate_report(self, customer_id: int) -> dict:
         with self.__db_connection as db:
             try:
-                customer = db.session.query(IndividualTable).filter_by(id=customer_id).first()
+                customer = db.session.query(CompanyTable).filter_by(id=customer_id).first()
                 return {
-                    "name": customer.full_name,
+                    "name": customer.trade_name,
                     "category": customer.category,
                     "balance": customer.balance
                 }
@@ -57,8 +57,8 @@ class IndividualRepository(CustomerInterface):
     def withdraw(self, customer_id: int, value: float) -> bool:
         with self.__db_connection as db:
             try:
-                limit = 500.0
-                customer = db.session.query(IndividualTable).filter_by(id=customer_id).first()
+                limit = 1000.0
+                customer = db.session.query(CompanyTable).filter_by(id=customer_id).first()
 
                 if value <= customer.balance and value <= limit:
                     customer.balance -= value
