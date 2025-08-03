@@ -18,3 +18,17 @@ class MockConnectionException:
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         pass
+
+class MockConnectionQueryException:
+    def __init__(self) -> None:
+        self.session = UnifiedAlchemyMagicMock()
+        self.session.query.side_effect = self.__raise_exception
+
+    def __raise_exception(self, *args, **kwargs):
+        raise Exception("Exception")
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        pass
