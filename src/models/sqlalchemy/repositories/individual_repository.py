@@ -42,7 +42,7 @@ class IndividualRepository(CustomerInterface):
             except NoResultFound:
                 return []
 
-    def generate_report(self, customer_id: int) -> None:
+    def generate_report(self, customer_id: int) -> dict:
         with self.__db_connection as db:
             try:
                 customer = db.session.query(IndividualTable).filter_by(id=customer_id).first()
