@@ -1,5 +1,5 @@
-from .company_create_controller import CompanyCreateController
-from .mocks.mock_repository import MockCustomerRepository
+from src.controllers.mocks.mock_repository import MockCustomerRepository
+from .create_controller import CompanyCreateController
 
 def test_create_customer_controller():
     mock_repository = MockCustomerRepository()

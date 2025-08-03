@@ -1,5 +1,5 @@
 from src.models.interfaces.customer import CustomerInterface
-from src.controllers.interfaces.customer_create_controller import CustomerCreateControllerInterface
+from src.controllers.interfaces.create_controller import CustomerCreateControllerInterface
 
 class CompanyCreateController(CustomerCreateControllerInterface):
     def __init__(self, company_repository: CustomerInterface) -> None:
