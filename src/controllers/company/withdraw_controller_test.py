@@ -7,7 +7,6 @@ def test_withdraw():
     controller = CompanyWithdrawController(company_repository=mock_repository)
     response = controller.withdraw(customer_id=10, value=100)
 
-
     assert response == {
         "data": {
             "type": "Company",
@@ -25,8 +24,7 @@ def test_withdraw_validate_value_not_number():
     with raises(Exception) as excinfo:
         controller.withdraw(customer_id=10, value="A")
 
-
-    assert str(excinfo.value) == "value not number"
+    assert str(excinfo.value) == "Value not number"
 
 def test_withdraw_validate_value_not_is_valid():
     mock_repository = MockCustomerRepository()
@@ -35,5 +33,4 @@ def test_withdraw_validate_value_not_is_valid():
     with raises(Exception) as excinfo:
         controller.withdraw(customer_id=10, value=-1)
 
-
-    assert str(excinfo.value) == "value not is valid"
+    assert str(excinfo.value) == "Value not is valid"
