@@ -13,7 +13,7 @@ def test_create_company():
         phone="19999999999",
         email="johndoe@example.com",
         category="Category A",
-        revenue=60500.00
+        monthly_income=60500.00
     )
 
     mock_connection.session.add.assert_called_once()
@@ -27,7 +27,7 @@ def test_create_company():
     assert individual_created.phone == "19999999999"
     assert individual_created.corporate_email == "johndoe@example.com"
     assert individual_created.category == "Category A"
-    assert individual_created.revenue == 60500.00
+    assert individual_created.monthly_income == 60500.00
 
 def test_create_individual_exception():
     mock_connection = MockConnectionException()
@@ -40,7 +40,7 @@ def test_create_individual_exception():
             phone="19999999999",
             email="johndoe@example.com",
             category="Category A",
-            revenue=60500.00
+            monthly_income=60500.00
         )
 
     mock_connection.session.rollback.assert_called_once()
@@ -55,7 +55,7 @@ def test_list_all_individuals():
         phone="19999999999",
         corporate_email="johndoe@example.com",
         category="Category A",
-        revenue=60500.00,
+        monthly_income=60500.00,
         balance=0
     ))
 
@@ -66,7 +66,7 @@ def test_list_all_individuals():
         phone="19999999999",
         corporate_email="johndoe@example.com",
         category="Category A",
-        revenue=60500.00,
+        monthly_income=60500.00,
         balance=0
     ))
 
@@ -102,7 +102,7 @@ def test_generate_report():
         phone="19999999999",
         corporate_email="johndoe@example.com",
         category="Category A",
-        revenue=60500.00,
+        monthly_income=60500.00,
         balance=1500
     ))
 
@@ -137,7 +137,7 @@ def test_withdraw():
         phone="19999999999",
         corporate_email="johndoe@example.com",
         category="Category A",
-        revenue=60500.00,
+        monthly_income=60500.00,
         balance=1500
     ))
 
@@ -159,7 +159,7 @@ def test_withdraw_error_value_bigger_balance():
         phone="19999999999",
         corporate_email="johndoe@example.com",
         category="Category A",
-        revenue=60500.00,
+        monthly_income=60500.00,
         balance=100
     ))
 
@@ -181,7 +181,7 @@ def test_withdraw_error_value_bigger_limit():
         phone="19999999999",
         corporate_email="johndoe@example.com",
         category="Category A",
-        revenue=60500.00,
+        monthly_income=60500.00,
         balance=1500
     ))
 

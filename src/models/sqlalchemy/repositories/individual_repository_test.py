@@ -13,7 +13,7 @@ def test_create_individual():
         phone="19999999999",
         email="johndoe@example.com",
         category="Category A",
-        revenue=6500.00
+        monthly_income=6500.00
     )
 
     mock_connection.session.add.assert_called_once()
@@ -40,7 +40,7 @@ def test_create_individual_exception():
             phone="19999999999",
             email="johndoe@example.com",
             category="Category A",
-            revenue=6500.00
+            monthly_income=6500.00
         )
 
     mock_connection.session.rollback.assert_called_once()

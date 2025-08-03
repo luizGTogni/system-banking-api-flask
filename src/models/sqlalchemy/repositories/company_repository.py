@@ -14,12 +14,12 @@ class CompanyRepository(CustomerInterface):
             phone: str,
             email: str,
             category: str,
-            revenue: float,
+            monthly_income: float,
         ) -> None:
         with self.__db_connection as db:
             try:
                 company_data = CompanyTable(
-                    revenue = revenue,
+                    monthly_income = monthly_income,
                     age = age,
                     trade_name = name,
                     phone = phone,

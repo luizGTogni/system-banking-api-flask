@@ -14,12 +14,12 @@ class IndividualRepository(CustomerInterface):
             phone: str,
             email: str,
             category: str,
-            revenue: float,
+            monthly_income: float,
         ) -> None:
         with self.__db_connection as db:
             try:
                 individual_data = IndividualTable(
-                    monthly_income = revenue,
+                    monthly_income = monthly_income,
                     age = age,
                     full_name = name,
                     phone = phone,

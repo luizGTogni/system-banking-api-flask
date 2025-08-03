@@ -10,7 +10,7 @@ class CustomerInterface(ABC):
         phone: str,
         email: str,
         category: str,
-        revenue: float
+        monthly_income: float
     ) -> None:
         pass
 
