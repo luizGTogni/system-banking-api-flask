@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS individual (
-    id INTEGER PRIMARY KEY AUTO INCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     monthly_income REAL,
     age INTEGER,
     full_name TEXT,
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS individual (
 );
 
 CREATE TABLE IF NOT EXISTS company (
-    id INTEGER PRIMARY KEY AUTO INCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     monthly_income REAL,
     age INTEGER,
     trade_name TEXT,
