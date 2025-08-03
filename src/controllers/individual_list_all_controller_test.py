@@ -1,5 +1,6 @@
 from .individual_list_all_controller import IndividualListAllController
 from .mocks.mock_repository import MockIndividualRepository
+from .mocks.mock_repository import MockIndividualRepositoryError
 
 def test_list_all_customers_controller():
     mock_repository = MockIndividualRepository()
@@ -34,5 +35,18 @@ def test_list_all_customers_controller():
                     "balance":15000.00
                 },
             ]
+        }
+    }
+
+def test_list_all_customers_controller_error_not_found():
+    mock_repository = MockIndividualRepositoryError()
+    controller = IndividualListAllController(individual_repository=mock_repository)
+    response = controller.list_all()
+
+    assert response == {
+        "data": {
+            "type": "Individuals",
+            "count": 0,
+            "attributes": []
         }
     }
