@@ -1,5 +1,7 @@
 from src.models.interfaces.customer import CustomerInterface
 from src.controllers.interfaces.withdraw_controller import CustomerWithdrawControllerInterface
+from src.main.errors.errors_types.http_bad_request import HttpBadRequestError
+from src.main.errors.errors_types.http_not_found import HttpNotFoundError
 
 class IndividualWithdrawController(CustomerWithdrawControllerInterface):
     def __init__(self, individual_repository: CustomerInterface) -> None:
@@ -14,13 +16,21 @@ class IndividualWithdrawController(CustomerWithdrawControllerInterface):
 
     def __validate_value(self, value: float) -> None:
         if not isinstance(value, (float, int)):
-            raise Exception("value not number")
+            raise HttpBadRequestError("Value not number")
 
         if value <= 0:
-            raise Exception("value not is valid")
+            raise HttpBadRequestError("Value not is valid")
 
     def __decrease_balance_in_db(self, customer_id: int, value: float) -> bool:
-        return self.__individual_repository.withdraw(customer_id, value)
+        try:
+            is_withdraw = self.__individual_repository.withdraw(customer_id, value)
+
+            if not is_withdraw:
+                raise HttpNotFoundError("Customer not found")
+
+            return is_withdraw
+        except Exception as exception:
+            raise exception
 
     def __format_response(self, is_valid_withdraw: bool) -> dict:
         return {

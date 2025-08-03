@@ -1,5 +1,6 @@
 from src.controllers.interfaces.report_controller import CustomerGenerateReportControlerInterface
 from src.models.interfaces.customer import CustomerInterface
+from src.main.errors.errors_types.http_not_found import HttpNotFoundError
 
 class CompanyGenerateReportController(CustomerGenerateReportControlerInterface):
     def __init__(self, company_repository: CustomerInterface) -> None:
@@ -13,6 +14,10 @@ class CompanyGenerateReportController(CustomerGenerateReportControlerInterface):
 
     def __collect_report_in_db(self, customer_id: int) -> dict:
         report = self.__company_repository.generate_report(customer_id)
+        print(report)
+        if not report:
+            raise HttpNotFoundError("Customer not found")
+
         return report
 
     def __format_response(self, report: dict) -> dict:
