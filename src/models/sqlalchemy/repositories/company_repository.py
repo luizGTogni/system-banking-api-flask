@@ -45,7 +45,7 @@ class CompanyRepository(CustomerInterface):
     def generate_report(self, customer_id: int) -> dict:
         with self.__db_connection as db:
             try:
-                customer = db.session.query(CompanyTable).filter_by(id=customer_id).first()
+                customer = db.session.query(CompanyTable).filter_by(id=customer_id).one()
                 return {
                     "name": customer.trade_name,
                     "category": customer.category,
@@ -58,13 +58,18 @@ class CompanyRepository(CustomerInterface):
         with self.__db_connection as db:
             try:
                 limit = 1000.0
-                customer = db.session.query(CompanyTable).filter_by(id=customer_id).first()
+                customer = db.session.query(CompanyTable).filter_by(id=customer_id).one()
 
-                if value <= customer.balance and value <= limit:
-                    customer.balance -= value
-                    db.session.commit()
-                    return True
+                if value > customer.balance:
+                    raise Exception("Value greater than balance")
 
+                if value > limit:
+                    raise Exception(f"Value greater than limit R$ {limit}")
+
+                customer.balance -= value
+                db.session.commit()
+                return True
+            except NoResultFound:
                 return False
             except Exception as exception:
                 db.session.rollback()
