@@ -3,6 +3,7 @@ from src.models.sqlalchemy.entities.company import CompanyTable
 from .company_repository import CompanyRepository
 from .mocks.mock_connection import MockConnection
 from .mocks.mock_connection_exception import MockConnectionException
+from .mocks.mock_connection_exception import MockConnectionQueryException
 
 def test_create_company():
     mock_connection = MockConnection()
@@ -111,7 +112,7 @@ def test_generate_report():
 
     mock_connection.session.query.assert_called_once_with(CompanyTable)
     mock_connection.session.filter_by.assert_called_once_with(id=10)
-    mock_connection.session.first.assert_called_once()
+    mock_connection.session.one.assert_called_once()
 
     assert response["name"] == "John Doe"
     assert response["category"] == "Category A"
@@ -131,7 +132,7 @@ def test_generate_report_not_found():
 def test_withdraw():
     mock_connection = MockConnection()
     mock_connection.session.add(CompanyTable(
-        id=2,
+        id=10,
         trade_name="John Doe",
         age=25,
         phone="19999999999",
@@ -146,7 +147,7 @@ def test_withdraw():
 
     mock_connection.session.query.assert_called_once_with(CompanyTable)
     mock_connection.session.filter_by.assert_called_once_with(id=10)
-    mock_connection.session.first.assert_called_once()
+    mock_connection.session.one.assert_called_once()
 
     assert response is True
 
@@ -164,13 +165,13 @@ def test_withdraw_error_value_bigger_balance():
     ))
 
     repository = CompanyRepository(db_connection=mock_connection)
-    response = repository.withdraw(customer_id=10, value=150)
+
+    with raises(Exception):
+        repository.withdraw(customer_id=10, value=150)
 
     mock_connection.session.query.assert_called_once_with(CompanyTable)
     mock_connection.session.filter_by.assert_called_once_with(id=10)
-    mock_connection.session.first.assert_called_once()
-
-    assert response is False
+    mock_connection.session.one.assert_called_once()
 
 def test_withdraw_error_value_bigger_limit():
     mock_connection = MockConnection()
@@ -186,16 +187,16 @@ def test_withdraw_error_value_bigger_limit():
     ))
 
     repository = CompanyRepository(db_connection=mock_connection)
-    response = repository.withdraw(customer_id=10, value=1100)
+
+    with raises(Exception):
+        repository.withdraw(customer_id=10, value=1100)
 
     mock_connection.session.query.assert_called_once_with(CompanyTable)
     mock_connection.session.filter_by.assert_called_once_with(id=10)
-    mock_connection.session.first.assert_called_once()
-
-    assert response is False
+    mock_connection.session.one.assert_called_once()
 
 def test_withdraw_exception():
-    mock_connection = MockConnectionException()
+    mock_connection = MockConnectionQueryException()
     repository = CompanyRepository(db_connection=mock_connection)
 
     with raises(Exception):

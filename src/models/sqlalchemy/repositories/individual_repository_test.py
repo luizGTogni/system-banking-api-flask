@@ -3,6 +3,7 @@ from src.models.sqlalchemy.entities.individual import IndividualTable
 from .individual_repository import IndividualRepository
 from .mocks.mock_connection import MockConnection
 from .mocks.mock_connection_exception import MockConnectionException
+from .mocks.mock_connection_exception import MockConnectionQueryException
 
 def test_create_individual():
     mock_connection = MockConnection()
@@ -111,7 +112,7 @@ def test_generate_report():
 
     mock_connection.session.query.assert_called_once_with(IndividualTable)
     mock_connection.session.filter_by.assert_called_once_with(id=10)
-    mock_connection.session.first.assert_called_once()
+    mock_connection.session.one.assert_called_once()
 
     assert response["name"] == "John Doe"
     assert response["category"] == "Category A"
@@ -146,7 +147,7 @@ def test_withdraw():
 
     mock_connection.session.query.assert_called_once_with(IndividualTable)
     mock_connection.session.filter_by.assert_called_once_with(id=10)
-    mock_connection.session.first.assert_called_once()
+    mock_connection.session.one.assert_called_once()
 
     assert response is True
 
@@ -163,14 +164,14 @@ def test_withdraw_error_value_bigger_balance():
         balance=100.00
     ))
 
+
     repository = IndividualRepository(db_connection=mock_connection)
-    response = repository.withdraw(customer_id=10, value=150)
+    with raises(Exception):
+        repository.withdraw(customer_id=10, value=150)
 
     mock_connection.session.query.assert_called_once_with(IndividualTable)
     mock_connection.session.filter_by.assert_called_once_with(id=10)
-    mock_connection.session.first.assert_called_once()
-
-    assert response is False
+    mock_connection.session.one.assert_called_once()
 
 def test_withdraw_error_value_bigger_limit():
     mock_connection = MockConnection()
@@ -186,16 +187,16 @@ def test_withdraw_error_value_bigger_limit():
     ))
 
     repository = IndividualRepository(db_connection=mock_connection)
-    response = repository.withdraw(customer_id=10, value=550)
+
+    with raises(Exception):
+        repository.withdraw(customer_id=10, value=550)
 
     mock_connection.session.query.assert_called_once_with(IndividualTable)
     mock_connection.session.filter_by.assert_called_once_with(id=10)
-    mock_connection.session.first.assert_called_once()
-
-    assert response is False
+    mock_connection.session.one.assert_called_once()
 
 def test_withdraw_exception():
-    mock_connection = MockConnectionException()
+    mock_connection = MockConnectionQueryException()
     repository = IndividualRepository(db_connection=mock_connection)
 
     with raises(Exception):
