@@ -34,7 +34,7 @@ class IndividualRepository(CustomerInterface):
                 db.session.rollback()
                 raise exception
 
-    def list_all(self) -> list[IndividualTable]:
+    def list_all(self) -> list:
         with self.__db_connection as db:
             try:
                 customers = db.session.query(IndividualTable).all()
