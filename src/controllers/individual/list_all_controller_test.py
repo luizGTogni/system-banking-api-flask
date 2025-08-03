@@ -1,6 +1,6 @@
-from .individual_list_all_controller import IndividualListAllController
-from .mocks.mock_repository import MockIndividualRepository
-from .mocks.mock_repository import MockIndividualRepositoryError
+from src.controllers.mocks.mock_repository import MockIndividualRepository
+from src.controllers.mocks.mock_repository import MockIndividualRepositoryError
+from .list_all_controller import IndividualListAllController
 
 def test_list_all_customers_controller():
     mock_repository = MockIndividualRepository()

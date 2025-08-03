@@ -1,6 +1,6 @@
 from src.models.interfaces.customer import CustomerInterface
 from src.models.sqlalchemy.entities.individual import IndividualTable
-from .interfaces.customer_list_all_controller import CustomerListAllControllerInterface
+from src.controllers.interfaces.list_all_controller import CustomerListAllControllerInterface
 
 class IndividualListAllController(CustomerListAllControllerInterface):
     def __init__(self, individual_repository: CustomerInterface) -> None:
